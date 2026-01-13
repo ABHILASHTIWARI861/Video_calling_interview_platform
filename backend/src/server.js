@@ -8,6 +8,8 @@ app.get('/',(req,res)=>{
 })
 
 console.log(ENV.DB_URL);
+console.log(ENV.PORT);
+
 app.listen(ENV.PORT,()=>{
     console.log("server is running on port"+" " + `${ENV.PORT}`);
 })

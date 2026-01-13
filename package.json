@@ -1,0 +1,20 @@
+{
+  "name": "video_calling_interview_platform",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "build": "npm install --prefix backend && npm install --prefix frontend/vite-project && npm run build --prefix frontend/vite-project"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ABHILASHTIWARI861/Video_calling_interview_platform.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ABHILASHTIWARI861/Video_calling_interview_platform/issues"
+  },
+  "homepage": "https://github.com/ABHILASHTIWARI861/Video_calling_interview_platform#readme",
+  "description": ""
+}
