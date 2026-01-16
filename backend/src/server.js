@@ -24,18 +24,15 @@ app.get('/hotel',(req,res)=>{
     res.send("Welcome to Hotel");
 })
 
-app.get('/',(req,res)=>{
-    res.send("Welcome to my website");
-})
 
 console.log(ENV.NODE_ENV);
 
-// if(ENV.NODE_ENV === "development"){
-//     app.use(express.static(path.join(__dirname,'../frontend','vite-project','dist')))
-//     app.get("/{*any}",(req,res)=>{
-//         res.sendFile(path.join(__dirname,'../frontend','vite-project','dist','index.html'))
-//     })
-// }
+if(ENV.NODE_ENV === "development"){
+    app.use(express.static(path.join(__dirname,'../frontend','vite-project','dist')))
+    app.get("/{*any}",(req,res)=>{
+        res.sendFile(path.join(__dirname,'../frontend','vite-project','dist','index.html'))
+    })
+}
 
 console.log(ENV.DB_URL);
 console.log(ENV.PORT);
