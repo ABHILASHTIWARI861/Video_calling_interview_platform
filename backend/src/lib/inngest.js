@@ -1,10 +1,10 @@
 import {Inngest} from 'inngest';
-import { connectDB } from './db';
-import User from '../models/User';
+import { connectDB } from './db.js';
+import User from '../models/User.js';
 
-export const inngest = Inngest({ id:"my-app"})  // it allows .createFunction and more like that
+export const inngest = new Inngest({ id:"my-app"})  // it allows .createFunction and more like that
 
-const syncUser = inngest.createfunction(
+const syncUser = inngest.createFunction(
     {id:"sync-user"},
     {event:"clerk/user.created"},
     
@@ -14,16 +14,16 @@ const syncUser = inngest.createfunction(
       const {first_name,last_name,id,email_addresses,image_url}=event.data;
 
       const new_user={
-        name:`${first_name}` + ` ${last_name}`,
-        email:email_addresses[0].email_address,
-        profileImage:image_url,
-        clerkId:id,
+        clerkId: id,
+        email: email_addresses[0]?.email_address,
+        name: `${first_name || ""} ${last_name || ""}`,
+        profileImage: image_url,
       }
-    await User.create(new_user)
+    await User.create(new_user);
     }   
 )
 
-const deleteUser = inngest.createfunction(
+const deleteUser = inngest.createFunction(
     {id:"delete-user"},
     {event:"clerk/user.deleted"},
 
