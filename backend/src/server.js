@@ -24,6 +24,10 @@ app.get('/hotel',(req,res)=>{
     res.send("Welcome to Hotel");
 })
 
+app.get('/',(req,res)=>{
+    res.send("Welcome to my website");
+})
+
 console.log(ENV.NODE_ENV);
 
 // if(ENV.NODE_ENV === "development"){
