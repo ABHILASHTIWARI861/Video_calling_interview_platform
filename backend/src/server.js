@@ -15,8 +15,8 @@ const app=express();
 app.use(express.json());
 app.use(cors({origin:ENV.CLIENT_URL,credentials:true}));
 
-// // Register Inngest endpoint for webhooks
-// app.use('/api/inngest', serve({ client: inngest, functions: userFunctions }));
+// Register Inngest endpoint for webhooks
+app.use('/api/inngest', serve({ client: inngest, functions: userFunctions }));
 
 
 app.get('/home',(req,res)=>{
