@@ -5,8 +5,9 @@ import { connectDB } from './lib/db.js';
 import cors from 'cors';
 import { serve } from 'inngest/express';
 import { inngest, userFunctions } from './lib/inngest.js';
-
-
+import { clerkMiddleware } from '@clerk/express'
+import { protectRoute } from './middleware/protectRoute.js';
+import chatRoutes from './routes/chatRoutes.js';
 
 const __dirname = path.resolve();
 
@@ -17,15 +18,21 @@ app.use(cors({origin:ENV.CLIENT_URL,credentials:true}));
 
 // Register Inngest endpoint for webhooks
 app.use('/api/inngest', serve({ client: inngest, functions: userFunctions }));
+app.use('/api/chat',chatRoutes)
 
-
+app.use(clerkMiddleware()) //It will add auth field to req object i.e req.auth
 app.get('/home',(req,res)=>{
-    res.send("Hello chulbul pandey kya kr rhi ho");
+    res.status(200).json({message:"Welcome to Home Page"});
 })
 
 app.get('/hotel',(req,res)=>{
     res.send("Welcome to Hotel");
 })
+
+app.get('/video_call',protectRoute,(req,res)=>{
+   res.status(200).json({message:"Welcome to Video Call Page"});
+}
+);
 
 console.log(ENV.NODE_ENV);
 
