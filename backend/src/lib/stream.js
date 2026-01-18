@@ -1,14 +1,17 @@
-import {Streamchat} from 'stream-chat';
-import ENV from './env';
+import {StreamChat} from 'stream-chat';
+import ENV from './env.js';
+
 
 const apiKey = ENV.STREAM_API_KEY;
 const apiSecret = ENV.STREAM_API_SECRET;
+
+console.log(apiKey,apiSecret);
 
 if(!apiKey || !apiSecret){
     throw new Error("STREAM_API_KEY and STREAM_API_SECRET are required");;
 }
 
-export const chatClient = Streamchat.getInstance(apiKey,apiSecret);
+export const chatClient = StreamChat.getInstance(apiKey,apiSecret);
 
 export const upsertStreamUser = async(userData) =>{
   try{
