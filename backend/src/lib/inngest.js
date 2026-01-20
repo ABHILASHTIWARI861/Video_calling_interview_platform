@@ -33,12 +33,12 @@ const syncUser = inngest.createFunction(
 const deleteUser = inngest.createFunction(
     {id:"delete-user"},
     {event:"clerk/user.deleted"},
-
+    
     async({event})=>{
         await connectDB();
         const {id}=event.data;
         await User.deleteOne({clerkId:id});
-
+        console.log("User deleted from DB");
         await deleteStreamUser(id.toString());
     }
 )
