@@ -1,4 +1,5 @@
 import {StreamChat} from 'stream-chat';
+import {StreamClient} from '@stream-io/node-sdk';
 import ENV from './env.js';
 
 
@@ -12,8 +13,8 @@ if(!apiKey || !apiSecret){
 }
 
 
-export const chatClient = new StreamChat(apiKey, apiSecret);
-
+export const chatClient = new StreamChat(apiKey, apiSecret);  //for chat operations
+export const streamClient = new StreamClient(apiKey, apiSecret); //for video_calling operations
 
 
 
