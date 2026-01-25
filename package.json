@@ -17,6 +17,9 @@
     "url": "https://github.com/ABHILASHTIWARI861/Video_calling_interview_platform/issues"
   },
   "homepage": "https://github.com/ABHILASHTIWARI861/Video_calling_interview_platform#readme",
-  "description": ""
-
+  "description": "",
+  "dependencies": {
+    "@tailwindcss/vite": "^4.1.18",
+    "tailwindcss": "^4.1.18"
+  }
 }
