@@ -8,6 +8,7 @@ import { inngest, userFunctions } from './lib/inngest.js';
 import { clerkMiddleware } from '@clerk/express'
 import { protectRoute } from './middleware/protectRoute.js';
 import chatRoutes from './routes/chatRoutes.js';
+import sessionRoutes from './routes/sessionRoute.js';
 
 const __dirname = path.resolve();
 
@@ -19,6 +20,7 @@ app.use(cors({origin:ENV.CLIENT_URL,credentials:true}));
 // Register Inngest endpoint for webhooks
 app.use('/api/inngest', serve({ client: inngest, functions: userFunctions }));
 app.use('/api/chat',chatRoutes)
+app.use('/api/sessions',sessionRoutes);
 
 app.use(clerkMiddleware()) //It will add auth field to req object i.e req.auth
 app.get('/home',(req,res)=>{
@@ -31,6 +33,7 @@ app.get('/hotel',(req,res)=>{
 
 app.get('/video_call',protectRoute,(req,res)=>{
    res.status(200).json({message:"Welcome to Video Call Page"});
+   console.log("User accessed video call page:", req.user)
 }
 );
 
