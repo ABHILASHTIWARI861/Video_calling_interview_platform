@@ -20,7 +20,7 @@ const UserSchema= new mongoose.Schema({
         unique:true,
     },
 }
-,{timestamps:true}
+,{timestamps:true}   //createdAt updatedAt ye 2 fields automatically add ho jate hain
 );
 
 const User=mongoose.model('User',UserSchema);
