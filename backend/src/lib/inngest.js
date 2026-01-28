@@ -22,7 +22,7 @@ const syncUser = inngest.createFunction(
       }
     await User.create(new_user);
 
-    await upsertStreamUser({
+    await upsertStreamUser({  //upsertStreamUser = Stream ke database me user banana
       id: new_user.clerkId.toString(),
       name: new_user.name,
       image: new_user.profileImage,
@@ -39,7 +39,7 @@ const deleteUser = inngest.createFunction(
         const {id}=event.data;
         await User.deleteOne({clerkId:id});
         console.log("User deleted from DB");
-        await deleteStreamUser(id.toString());
+        await deleteStreamUser(id.toString());  // deleteStreamUser = Stream ke database se user delete karna
     }
 )
 
