@@ -8,12 +8,17 @@ const LANGUAGE_VERSIONS = {
   java: { language: "java", version: "15.0.2" },
 };
 
-/**
+/** comment hai ,hta bhi do to no prblm but samjhne ke liye rkh dia
  * @param {string} language - programming language
  * @param {string} code - source code to executed
- * @returns {Promise<{success:boolean, output?:string, error?: string}>}
+ * @returns {Promise<
+ * {
+ * success:boolean,
+ * output?:string, 
+ * error?: string}>
+ * }
  */
-export async function executeCode(language, code) {
+export async function executeCode(language, code) {  
   try {
     const languageConfig = LANGUAGE_VERSIONS[language];
 
@@ -24,11 +29,14 @@ export async function executeCode(language, code) {
       };
     }
 
-    const response = await fetch(`${PISTON_API}/execute`, {
-      method: "POST",
+    const response = await fetch(`${PISTON_API}/execute`, {  // fetch(url, options)  url: PISTON_API/execute i.e, https://emkc.org/api/v2/piston/execute
+      method: "POST",                                        // Piston API khud hi code run krta hai
       headers: {
-        "Content-Type": "application/json",
-      },
+        "Content-Type": "application/json",                //Content-Type-->>	                              Use-->>
+       },                                                  //application/json	                           JSON data
+                                                           //multipart/form-data	                       File upload
+                                                          //application/x-www-form-urlencoded	           HTML forms
+                                                          //text/plain	                                 Simple text
       body: JSON.stringify({
         language: languageConfig.language,
         version: languageConfig.version,
@@ -48,10 +56,10 @@ export async function executeCode(language, code) {
       };
     }
 
-    const data = await response.json();
-
+    const data = await response.json();      //chat gpt se .response.json ka use samjho 
+                                            //before and after conversion ka example dekho.
     const output = data.run.output || "";
-    const stderr = data.run.stderr || "";
+    const stderr = data.run.stderr || "";  //Read it as std err (standard error)
 
     if (stderr) {
       return {
@@ -65,7 +73,9 @@ export async function executeCode(language, code) {
       success: true,
       output: output || "No output",
     };
-  } catch (error) {
+  }
+  
+  catch (error) {
     return {
       success: false,
       error: `Failed to execute code: ${error.message}`,
@@ -78,6 +88,7 @@ function getFileExtension(language) {
     javascript: "js",
     python: "py",
     java: "java",
+    
   };
 
   return extensions[language] || "txt";

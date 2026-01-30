@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
-import { PROBLEMS } from "../data/problems.jsx";
+import { PROBLEMS } from "../data/problems";  
 import Navbar from "../components/Navbar";
 
 import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
@@ -42,7 +42,7 @@ function ProblemPage() {
 
   const handleProblemChange = (newProblemId) => navigate(`/problem/${newProblemId}`);
 
-  const triggerConfetti = () => {
+  const triggerConfetti = () => {     //congratulation ka baam phodne ke kaam aata hai
     confetti({
       particleCount: 80,
       spread: 250,
@@ -110,25 +110,25 @@ function ProblemPage() {
     <div className="h-screen bg-base-100 flex flex-col">
       <Navbar />
 
-      <div className="flex-1">
-        <PanelGroup direction="horizontal">
+      <div className="flex-1">   {/* nav bar ko chor kr sari remainig ht le lo*/}
+        <PanelGroup direction="horizontal">  {/*This creates a left–right split layout.*/}
           {/* left panel- problem desc */}
-          <Panel defaultSize={40} minSize={30}>
+          <Panel defaultSize={40} minSize={30}> {/* left panel ki width 40% set kr di hy by default */}
             <ProblemDescription
               problem={currentProblem}
               currentProblemId={currentProblemId}
-              onProblemChange={handleProblemChange}
-              allProblems={Object.values(PROBLEMS)}
+              onProblemChange={handleProblemChange}               //React ka built-in event nahi hai ye ,like OnClick    
+              allProblems={Object.values(PROBLEMS)}               //object.values(PROBLEMS) se hum PROBLEMS object ki saari values ko ek array me convert kr dete hain
             />
           </Panel>
 
           <PanelResizeHandle className="w-2 bg-base-300 hover:bg-primary transition-colors cursor-col-resize" />
 
           {/* right panel- code editor & output */}
-          <Panel defaultSize={60} minSize={30}>
-            <PanelGroup direction="vertical">
+          <Panel defaultSize={60} minSize={30}>   {/* right panel ki width bachi hue 60% set kr di hy by default */}
+            <PanelGroup direction="vertical">     {/*This creates a top–bottom split layout.*/}
               {/* Top panel - Code editor */}
-              <Panel defaultSize={70} minSize={30}>
+              <Panel defaultSize={70} minSize={30}>   {/* code editor ki height 70% set kr di hy by default */}
                 <CodeEditorPanel
                   selectedLanguage={selectedLanguage}
                   code={code}
@@ -143,7 +143,7 @@ function ProblemPage() {
 
               {/* Bottom panel - Output Panel*/}
 
-              <Panel defaultSize={30} minSize={30}>
+              <Panel defaultSize={30} minSize={30}>  {/* output panel ki height bachi hue 30% set kr di hy by default */}
                 <OutputPanel output={output} />
               </Panel>
             </PanelGroup>
