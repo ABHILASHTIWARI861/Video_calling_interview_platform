@@ -13,7 +13,7 @@ function ProblemsPage() {
   const hardProblemsCount = problems.filter((p) => p.difficulty === "Hard").length;
 
   return (
-    <div className="relative min-h-screen bg-base-200 overflow-hidden">
+    <div className="relative min-h-screen bg-base-200">
       <Navbar />
 
       {/* LAMP BACKGROUND */}
