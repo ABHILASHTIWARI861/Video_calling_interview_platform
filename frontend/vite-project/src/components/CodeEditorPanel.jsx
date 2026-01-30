@@ -17,7 +17,7 @@ function CodeEditorPanel({
           <img
             src={LANGUAGE_CONFIG[selectedLanguage].icon}
             alt={LANGUAGE_CONFIG[selectedLanguage].name}
-            className="size-6"
+            className="size-7  rounded-lg"
           />
           <select className="select select-sm" value={selectedLanguage} onChange={onLanguageChange}>
             {Object.entries(LANGUAGE_CONFIG).map(([key, lang]) => (
