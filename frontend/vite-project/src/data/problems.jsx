@@ -357,4 +357,5 @@ export const LANGUAGE_CONFIG = {
     icon: "/java.png",
     monacoLang: "java",
   },
+  
 };
