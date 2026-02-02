@@ -39,8 +39,6 @@ app.use(cors({
 app.use('/api/inngest', serve({ client: inngest, functions: userFunctions }));
 //https://my-app-at.onrender.com/api/inngest -->>ye kaam start me hi inngest dashBoard pe apn kr rakhe the.
 
-app.use('/api/chat',chatRoutes)
-app.use('/api/sessions',sessionRoutes);
 
 app.use(clerkMiddleware()) //It will add auth field to req object (i.e req.auth,req.user) 
 //req.auth = {7
@@ -51,6 +49,11 @@ app.use(clerkMiddleware()) //It will add auth field to req object (i.e req.auth,
 //}
 //✅ Always present (even if user not logged in)
 //✅ If NOT logged in → req.auth.userId === null
+
+
+app.use('/api/chat',chatRoutes)
+app.use('/api/sessions',sessionRoutes);
+
 app.get('/home',(req,res)=>{
     res.status(200).json({message:"Welcome to Home Page"});
 })
