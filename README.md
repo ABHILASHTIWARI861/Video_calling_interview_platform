@@ -46,7 +46,7 @@ CLERK_SECRET_KEY=your_clerk_secret_key
 CLIENT_URL=http://localhost:5173
 ```
 
-### Frontend (`/frontend`)
+### Frontend (`/frontend/vite-project`)
 
 ```bash
 VITE_CLERK_PUBLISHABLE_KEY=your_clerk_publishable_key
@@ -73,7 +73,7 @@ npm run dev
 
 ```
 bash
-cd frontend
+cd frontend/vite/project
 npm install
 npm run dev
 ```
