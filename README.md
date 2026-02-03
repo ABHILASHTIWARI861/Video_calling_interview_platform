@@ -1,6 +1,6 @@
 <h1 align="center">✨ Full-Stack Interview Platform ✨</h1>
 
-![Demo App](/frontend/public/screenshot-for-readme.png)
+![Demo App](/frontend/vite-project/public/screenshot-for-readme.png)
 
 ✨ Highlights:
 
