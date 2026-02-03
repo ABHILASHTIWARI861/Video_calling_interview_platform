@@ -13,10 +13,10 @@ import { SignInButton } from "@clerk/clerk-react";
 
 function Home_page() {
   return (
-    <div className="relative min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-800 text-base-content">
+    <div className="relative min-h-screen ">
       {/* NAVBAR */}
-      <nav className="sticky top-0 z-50 backdrop-blur-xl bg-slate-950/70 border-b border-white/10">
-        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <nav className="sticky top-0 z-50 backdrop-blur-xs bg-blue-500/30 border-white/10">
+        <div className="max-w-8xl  px-6 py-4 flex items-center justify-between">
           {/* LOGO */}
           <Link
             to="/"
