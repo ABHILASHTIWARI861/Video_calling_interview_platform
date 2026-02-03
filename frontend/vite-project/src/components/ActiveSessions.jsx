@@ -1,10 +1,10 @@
 import {
   ArrowRightIcon,
-  Code2Icon,
+  ChevronsRight,
   CrownIcon,
   SparklesIcon,
   UsersIcon,
-  ZapIcon,
+  RadioTower,
   LoaderIcon,
 } from "lucide-react";
 import { Link } from "react-router";
@@ -12,14 +12,14 @@ import { getDifficultyBadgeClass } from "../lib/utils";
 
 function ActiveSessions({ sessions, isLoading, isUserInSession }) {
   return (
-    <div className="lg:col-span-2 card bg-base-100 border-2 border-primary/20 hover:border-primary/30 h-full">
+    <div className="lg:col-span-2 card bg-base-100 border-2 border-primary/20 shadow-2xl hover:shadow-blue-500/30 h-full ">
       <div className="card-body">
         {/* HEADERS SECTION */}
         <div className="flex items-center justify-between mb-6">
           {/* TITLE AND ICON */}
           <div className="flex items-center gap-3">
-            <div className="p-2 bg-gradient-to-br from-primary to-secondary rounded-xl">
-              <ZapIcon className="size-5" />
+            <div className="p-2 bg-gradient-to-br from-sky-500/40 to-purple-600/50 rounded-xl">
+              <RadioTower className="size-5z" />
             </div>
             <h2 className="text-2xl font-black">Live Sessions</h2>
           </div>
@@ -40,13 +40,13 @@ function ActiveSessions({ sessions, isLoading, isUserInSession }) {
             sessions.map((session) => (
               <div
                 key={session._id}
-                className="card bg-base-200 border-2 border-base-300 hover:border-primary/50"
+                className="card bg-base-200 border-2 border-base-300 hover:border-secondary/70"
               >
                 <div className="flex items-center justify-between gap-4 p-5">
                   {/* LEFT SIDE */}
                   <div className="flex items-center gap-4 flex-1">
-                    <div className="relative size-14 rounded-xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center">
-                      <Code2Icon className="size-7 text-white" />
+                    <div className="relative size-14 rounded-xl bg-gradient-to-br from-sky-500/40 to-purple-600/50 flex items-center justify-center">
+                      <ChevronsRight className="size-7 text-white" />
                       <div className="absolute -top-1 -right-1 size-4 bg-success rounded-full border-2 border-base-100" />
                     </div>
 
@@ -84,7 +84,7 @@ function ActiveSessions({ sessions, isLoading, isUserInSession }) {
                   {session.participant && !isUserInSession(session) ? (
                     <button className="btn btn-disabled btn-sm">Full</button>
                   ) : (
-                    <Link to={`/session/${session._id}`} className="btn btn-primary btn-sm gap-2">
+                    <Link to={`/session/${session._id}`} className="btn badge-dash btn-sm gap-2">
                       {isUserInSession(session) ? "Rejoin" : "Join"}
                       <ArrowRightIcon className="size-4" />
                     </Link>
