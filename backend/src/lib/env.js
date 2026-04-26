@@ -1,5 +1,12 @@
 import dotenv from 'dotenv';// Ye dotenv library ko load karta hai
-dotenv.config();  //loads environment variables from a .env file into process.env
+import path from "path";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const envPath = path.resolve(__dirname, "../../.env");
+
+dotenv.config({ path: envPath });  //loads environment variables from backend/.env into process.env
                   //.env file must be located in the current working directory
                   //Usually CWD =📁 folder jahan se tum npm run start ya npm run dev chalaye ho (i.e server.js ko run kiye ho) {here it is backend}
 // I am running server.js via npm run start or npm run dev ,which is present in package.json,and this package.json is present in backend folder

@@ -1,6 +1,7 @@
 // Piston API is a service for code execution
+// We call it through our backend proxy to avoid CORS issues.
 
-const PISTON_API = "https://emkc.org/api/v2/piston";
+import axiosInstance from "./axios.jsx";
 
 const LANGUAGE_VERSIONS = {
   javascript: { language: "javascript", version: "18.15.0" },
@@ -29,35 +30,19 @@ export async function executeCode(language, code) {
       };
     }
 
-    const response = await fetch(`${PISTON_API}/execute`, {  // fetch(url, options)  url: PISTON_API/execute i.e, https://emkc.org/api/v2/piston/execute
-      method: "POST",                                        // Piston API khud hi code run krta hai
-      headers: {
-        "Content-Type": "application/json",                //Content-Type-->>	                              Use-->>
-       },                                                  //application/json	                           JSON data
-                                                           //multipart/form-data	                       File upload
-                                                          //application/x-www-form-urlencoded	           HTML forms
-                                                          //text/plain	                                 Simple text
-      body: JSON.stringify({
-        language: languageConfig.language,
-        version: languageConfig.version,
-        files: [
-          {
-            name: `main.${getFileExtension(language)}`,
-            content: code,
-          },
-        ],
-      }),
+    // Hit our backend route /api/execute, which proxies to Piston.
+    const response = await axiosInstance.post("/execute", {
+      language: languageConfig.language,
+      version: languageConfig.version,
+      files: [
+        {
+          name: `main.${getFileExtension(language)}`,
+          content: code,
+        },
+      ],
     });
 
-    if (!response.ok) {
-      return {
-        success: false,
-        error: `HTTP error! status: ${response.status}`,
-      };
-    }
-
-    const data = await response.json();      //chat gpt se .response.json ka use samjho 
-                                            //before and after conversion ka example dekho.
+    const data = response.data;      // Backend forwards Piston's JSON response
     const output = data.run.output || "";
     const stderr = data.run.stderr || "";  //Read it as std err (standard error)
 

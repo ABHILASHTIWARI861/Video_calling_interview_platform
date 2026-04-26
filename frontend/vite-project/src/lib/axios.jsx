@@ -1,7 +1,8 @@
 import axios from "axios";
 
 const axiosInstance = axios.create({
-  baseURL: import.meta.env.VITE_API_URL,
+  // If VITE_API_URL isn't set (missing frontend .env), default to local backend.
+  baseURL: import.meta.env.VITE_API_URL || "http://localhost:3000/api",
   withCredentials: true,
 });
 
