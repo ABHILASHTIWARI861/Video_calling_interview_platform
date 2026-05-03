@@ -1,0 +1,111 @@
+# 🚦 Rate Limiting Setup (Express.js)
+
+## 📦 Install Dependency
+
+```bash
+npm i express-rate-limit
+```
+
+---
+
+## 📁 middleware/rateLimit.js
+
+```js
+import rateLimit from "express-rate-limit";
+
+// common helper: userId available ho to user-based key, warna IP
+const keyByUserOrIp = (req) => req.auth?.userId || req.ip;
+
+// Global safety net
+export const globalApiLimiter = rateLimit({
+  windowMs: 60 * 1000, // 1 min
+  max: 300, // 300 req/min per user or IP
+  standardHeaders: true,
+  legacyHeaders: false,
+  keyGenerator: keyByUserOrIp,
+  message: { message: "Too many requests, try again in a minute." },
+});
+
+// Strict limiter for join attempts
+export const joinSessionLimiter = rateLimit({
+  windowMs: 60 * 1000, // 1 min
+  max: 15, // per user/IP
+  standardHeaders: true,
+  legacyHeaders: false,
+  keyGenerator: keyByUserOrIp,
+  message: { message: "Too many join attempts. Please wait a bit." },
+});
+
+// Strict limiter for create session
+export const createSessionLimiter = rateLimit({
+  windowMs: 60 * 1000,
+  max: 10,
+  standardHeaders: true,
+  legacyHeaders: false,
+  keyGenerator: keyByUserOrIp,
+  message: { message: "Too many sessions created. Slow down." },
+});
+
+// End session limiter
+export const endSessionLimiter = rateLimit({
+  windowMs: 60 * 1000,
+  max: 20,
+  standardHeaders: true,
+  legacyHeaders: false,
+  keyGenerator: keyByUserOrIp,
+  message: { message: "Too many end requests. Try again shortly." },
+});
+
+// Public execute route limiter (IP-based)
+export const executeLimiter = rateLimit({
+  windowMs: 60 * 1000,
+  max: 30,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { message: "Too many code executions. Please wait." },
+});
+```
+
+---
+
+## 📁 server.js (or app.js)
+
+```js
+import { globalApiLimiter, executeLimiter } from "./middleware/rateLimit.js";
+
+// public route (execute) pe dedicated limiter
+app.use("/api/execute", executeLimiter, executeRoutes);
+
+app.use(clerkMiddleware());
+
+// auth-wale APIs pe global limiter
+app.use(globalApiLimiter);
+
+app.use("/api/chat", chatRoutes);
+app.use("/api/sessions", sessionRoutes);
+```
+
+---
+
+## 📁 routes/sessionRoutes.js
+
+```js
+import {
+  createSessionLimiter,
+  joinSessionLimiter,
+  endSessionLimiter,
+} from "../middleware/rateLimit.js";
+
+router.post("/", protectRoute, createSessionLimiter, createSession);
+
+router.get("/active", protectRoute, getActiveSessions);
+router.get("/my-recent", protectRoute, getMyRecentSessions);
+
+router.get("/:id", protectRoute, getSessionById);
+
+router.post("/:id/join", protectRoute, joinSessionLimiter, joinSession);
+
+router.post("/:id/end", protectRoute, endSessionLimiter, endSession);
+```
+
+---
