@@ -29,6 +29,19 @@ const SessionSchema = new mongoose.Schema({
         type:String,
         default:"",
     },
+    // AWS S3 Asset Fields
+    recordingUrl: {
+        type: String,
+        default: "",
+    },
+    codeSnapshotUrl: {
+        type: String,
+        default: "",
+    },
+    notesUrl: {
+        type: String,
+        default: "",
+    },
 },
 {timestamps:true}
 )

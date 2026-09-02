@@ -20,7 +20,8 @@
 - ⚡ Data Fetching & Caching via TanStack Query
 - 🤖 CodeRabbit for PR Analysis & Code Optimization
 - 🧑‍💻 Git & GitHub Workflow (branches, PRs, merges)
-- 🚀 Deployment on Render (free-tier friendly)
+- ☁️ **AWS Cloud Integration** — AWS S3 Presigned URLs for recordings/resumes, AWS Lambda runner readiness, & Docker containerization
+- 🚀 Deployment on Render / AWS ECS / App Runner
 
 ---
 
@@ -44,6 +45,13 @@ CLERK_PUBLISHABLE_KEY=your_clerk_publishable_key
 CLERK_SECRET_KEY=your_clerk_secret_key
 
 CLIENT_URL=http://localhost:5173
+
+# ☁️ AWS Cloud Setup (Optional / Supports Fallback Mode)
+AWS_REGION=us-east-1
+AWS_ACCESS_KEY_ID=your_aws_access_key_id
+AWS_SECRET_ACCESS_KEY=your_aws_secret_access_key
+AWS_S3_BUCKET_NAME=interview-platform-recordings
+AWS_LAMBDA_EXECUTE_URL=your_optional_aws_lambda_runner_url
 ```
 
 ### Frontend (`/frontend/vite-project`)
@@ -58,10 +66,32 @@ VITE_STREAM_API_KEY=your_stream_api_key
 
 ---
 
+## ☁️ AWS API Endpoints
+
+- `GET /api/aws/status` — Returns status of AWS S3 & Lambda integration.
+- `POST /api/aws/upload-url` — Generates S3 Presigned Upload URL for recordings, code snapshots, or resumes.
+- `POST /api/aws/download-url` — Generates temporary S3 Presigned Download URL for private viewing.
+- `POST /api/execute` — Executes code via AWS Lambda runner (if configured) or Piston engine fallback.
+
+---
+
+## 🐳 Docker & AWS Deployment
+
+Run locally with Docker Compose:
+```bash
+docker-compose up --build
+```
+
+Deploy to AWS ECS (Fargate) / App Runner:
+```bash
+docker build -t interview-platform-backend .
+```
+
+---
+
 ## 🔧 Run the Backend
 
 ```bash
-
 cd backend
 npm install
 npm run dev
@@ -71,8 +101,7 @@ npm run dev
 
 ## 🔧 Run the Frontend
 
-```
-bash
+```bash
 cd frontend/vite-project
 npm install
 npm run dev

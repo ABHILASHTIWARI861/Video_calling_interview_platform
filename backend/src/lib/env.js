@@ -21,7 +21,13 @@ const ENV = {
     STREAM_API_KEY: process.env.STREAM_API_KEY,
     STREAM_API_SECRET: process.env.STREAM_API_SECRET,
     CLERK_PUBLISHABLE_KEY: process.env.CLERK_PUBLISHABLE_KEY,
-    CLERK_SECRET_KEY: process.env.CLERK_SECRET_KEY
+    CLERK_SECRET_KEY: process.env.CLERK_SECRET_KEY,
+    // AWS Configuration
+    AWS_REGION: process.env.AWS_REGION || "us-east-1",
+    AWS_ACCESS_KEY_ID: process.env.AWS_ACCESS_KEY_ID || "",
+    AWS_SECRET_ACCESS_KEY: process.env.AWS_SECRET_ACCESS_KEY || "",
+    AWS_S3_BUCKET_NAME: process.env.AWS_S3_BUCKET_NAME || "interview-platform-recordings",
+    AWS_LAMBDA_EXECUTE_URL: process.env.AWS_LAMBDA_EXECUTE_URL || ""
 }
 
 export default ENV;

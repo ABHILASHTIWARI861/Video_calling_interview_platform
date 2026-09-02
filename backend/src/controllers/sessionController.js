@@ -129,6 +129,7 @@ export async function joinSession(req, res) {
 export async function endSession(req, res) {
   try {
     const { id } = req.params;
+    const { recordingUrl, codeSnapshotUrl, notesUrl } = req.body || {};
     const userId = req.user._id;
 
     const session = await Session.findById(id);
@@ -154,9 +155,13 @@ export async function endSession(req, res) {
     await channel.delete();
 
     session.status = "completed";
+    if (recordingUrl) session.recordingUrl = recordingUrl;
+    if (codeSnapshotUrl) session.codeSnapshotUrl = codeSnapshotUrl;
+    if (notesUrl) session.notesUrl = notesUrl;
+
     await session.save();
 
-    res.status(200).json({ session, message: "Session ended successfully" });
+    res.status(200).json({ session, message: "Session ended successfully with AWS S3 assets updated" });
   } catch (error) {
     console.log("Error in endSession controller:", error.message);
     res.status(500).json({ message: "Internal Server Error" });

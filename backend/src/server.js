@@ -10,6 +10,7 @@ import { protectRoute } from './middleware/protectRoute.js';
 import chatRoutes from './routes/chatRoutes.js';
 import sessionRoutes from './routes/sessionRoute.js';
 import executeRoutes from './routes/executeRoute.js';
+import awsRoutes from './routes/awsRoutes.js';
 
 const __dirname = path.resolve(); //path.resolve()-->>returns an absolute path starting from the current working directory if no arguments are provided.
                                   //path.resolve("config", ".env");  if cwd is /home/user/project , it will return /home/user/project/config/.env
@@ -41,6 +42,8 @@ app.use(cors({
 app.use('/api/inngest', serve({ client: inngest, functions: userFunctions }));
 // 2) Code execution proxy (used by coding playground)
 app.use('/api/execute', executeRoutes);
+// 3) AWS Integration Endpoints
+app.use('/api/aws', awsRoutes);
 
 // Auth middleware for the rest of the API
 app.use(clerkMiddleware()) //It will add auth field to req object (i.e req.auth,req.user) 
