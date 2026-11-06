@@ -49,10 +49,10 @@ router.post("/download-url", protectRoute, async (req, res) => {
 });
 
 // Mock upload endpoint for local testing when AWS credentials aren't set
-router.put("/mock-upload/*", (req, res) => {
+router.put("/mock-upload/{*splat}", (req, res) => {
   return res.status(200).json({
     message: "Mock S3 file upload successful (Fallback Mode)",
-    uploadedPath: req.params[0],
+    uploadedPath: req.params.splat || req.params[0],
     status: "SUCCESS",
   });
 });

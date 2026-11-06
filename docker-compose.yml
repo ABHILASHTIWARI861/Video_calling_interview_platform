@@ -1,16 +1,40 @@
 version: '3.8'
 
 services:
-  interview-platform-backend:
+  # 1. MongoDB Database Service
+  mongo:
+    image: mongo:7.0-jammy
+    container_name: interview-mongo
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_DATABASE: interview_db
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - interview-network
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  # 2. Node.js Express Backend Service
+  backend:
     build:
       context: .
       dockerfile: Dockerfile
+    container_name: interview-backend
+    restart: unless-stopped
     ports:
       - "3000:3000"
     environment:
       - PORT=3000
       - NODE_ENV=development
-      - DB_URL=${DB_URL}
+      - DB_URL=mongodb://mongo:27017/interview_db
+      - CLIENT_URL=http://localhost:80
       - AWS_REGION=${AWS_REGION:-us-east-1}
       - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
       - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
@@ -20,4 +44,36 @@ services:
       - CLERK_SECRET_KEY=${CLERK_SECRET_KEY}
       - STREAM_API_KEY=${STREAM_API_KEY}
       - STREAM_API_SECRET=${STREAM_API_SECRET}
-    restart: always
+      - INNGEST_EVENT_KEY=${INNGEST_EVENT_KEY}
+      - INNGEST_SIGNING_KEY=${INNGEST_SIGNING_KEY}
+    depends_on:
+      mongo:
+        condition: service_healthy
+    networks:
+      - interview-network
+
+  # 3. React Vite Frontend (Served with Nginx)
+  frontend:
+    build:
+      context: ./frontend/vite-project
+      dockerfile: Dockerfile
+      args:
+        - VITE_CLERK_PUBLISHABLE_KEY=${VITE_CLERK_PUBLISHABLE_KEY}
+        - VITE_API_URL=/api
+        - VITE_STREAM_API_KEY=${VITE_STREAM_API_KEY}
+    container_name: interview-frontend
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    networks:
+      - interview-network
+
+networks:
+  interview-network:
+    driver: bridge
+
+volumes:
+  mongo_data:
+    driver: local
