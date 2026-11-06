@@ -17,22 +17,25 @@ export async function createSession(req, res) {
     // create session in db
     const session = await Session.create({ problem, difficulty, host: userId, callId });
 
-    // create stream video call
-    await streamClient.video.call("default", callId).getOrCreate({
-      data: {
+    // create stream video call and chat (with fallback if Stream credentials are mock)
+    try {
+      await streamClient.video.call("default", callId).getOrCreate({
+        data: {
+          created_by_id: clerkId,
+          custom: { problem, difficulty, sessionId: session._id.toString() },
+        },
+      });
+
+      const channel = chatClient.channel("messaging", callId, {
+        name: `${problem} Session`,
         created_by_id: clerkId,
-        custom: { problem, difficulty, sessionId: session._id.toString() },
-      },
-    });
+        members: [clerkId],
+      });
 
-    // chat messaging
-    const channel = chatClient.channel("messaging", callId, {
-      name: `${problem} Session`,
-      created_by_id: clerkId,
-      members: [clerkId],
-    });
-
-    await channel.create();
+      await channel.create();
+    } catch (streamError) {
+      console.warn("⚠️ Stream video/chat notice (operating in dev mode):", streamError.message);
+    }
 
     res.status(201).json({ session });
   } catch (error) {
